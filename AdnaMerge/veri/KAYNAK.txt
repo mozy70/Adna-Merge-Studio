@@ -1,0 +1,82 @@
+veri klasorundeki dosyalarin kaynagi
+=====================================
+
+hg19ToHg38.over.chain.gz
+  UCSC Genome Browser'in hg19 -> hg38 liftOver zincir dosyasi.
+  Degistirilmeden dagitilir.
+
+rCRS.fasta
+  Revize Cambridge Referans Dizisi (NC_012920.1), 16.569 baz,
+  3107. pozisyon N. hg38 chrM ile ayni dizidir.
+
+ysnp_hg38_yleaf.tsv.gz
+  Kaynak : Yleaf, https://github.com/genid/Yleaf
+           dosya yleaf/data/hg38/ftdna_positions_hg38.txt
+           commit a2368eaaf08c0af53063514ed435d9e844b0ac1e
+  Yazarlar: Arwin Ralf, Diego Montiel Gonzalez, Kaiyin Zhong,
+           Manfred Kayser (Department of Genetic Identification,
+           Erasmus MC University Medical Centre Rotterdam)
+  Lisans : GNU General Public License v3 (LICENSE_Yleaf_GPL3.txt)
+  Degisiklik: yalniz SNP adi, hg38 konumu, atasal ve turemis allel
+           kolonlari alindi; ayni ad ve konumdaki tekrar satirlar
+           atildi (843.283 satirdan 808.046 satir kaldi); konuma ve
+           ada gore siralandi; gzip ile sikistirildi. Kolonlar:
+           ad, poz, atasal, turemis.
+
+ysnp_b37_yleaf.tsv.gz
+  Kaynak : Yleaf, https://github.com/genid/Yleaf
+           dosya yleaf/data/hg19/ftdna_positions_hg19.txt
+           commit a2368eaaf08c0af53063514ed435d9e844b0ac1e
+  Yazarlar: ysnp_hg38_yleaf.tsv.gz ile ayni.
+  Lisans : GNU General Public License v3 (LICENSE_Yleaf_GPL3.txt)
+  Degisiklik: yalniz SNP adi ve GRCh37 konumu alindi. ysnp_hg38_yleaf.tsv.gz
+           satirlarinin hg38 konumu ayni commit'teki
+           yleaf/data/hg19/hg38ToHg19.over.chain.gz zinciriyle tasindi;
+           yalniz chrY'nin arti ipligine dusen ve Yleaf hg19 dosyasindaki
+           konumla ayni olan satirlar tutuldu (808.046 satirdan 783.888
+           satir kaldi; 24.066 ad hg19 dosyasinda yok, 22 satir tasinamadi,
+           60 satir chrY disina, 10 satir eksi iplige dustu). Konuma ve ada
+           gore siralandi; gzip ile sikistirildi. Kolonlar: ad, poz.
+           Allel ve hg38 konumu ysnp_hg38_yleaf.tsv.gz'den ada gore alinir.
+
+sablon/
+  Cip sablonlari. Her sablon bir urunun bir surumunun gercek ham veri
+  dosyasindan olculmustur: marker listesi ve sirasi, baslik blogu, kolon
+  duzeni, ayirici, satir sonu, cagrisiz simgesi, tirnak kullanimi, haploid
+  yazim ve heterozigot sirasi. Sablonlar GENOTIP TASIMAZ.
+  Kaynak : On bir sablon (23andMe V5 2024 ve 2025, Ancestry V2 2026
+           ve V2 2023, FTDNA 2026, FTDNA V3, FTDNA V2 otozom a ve b,
+           MyHeritage V1, V2 ve LowPass) bagisci bireylerin kendi kit
+           dosyalarindan olculdu ve ayni dosyalarla gidis-donus
+           sinamasindan gecti.
+           Diger sekiz sablonun marker listeleri WGS Extract projesinin
+           referans kutuphanesinden alindi
+           (https://github.com/WGSExtract/WGSExtract-Dev, GPL-3).
+           Marker listeleri olgudan ibarettir (ad, kromozom, konum);
+           bireysel genotip ya da kisisel veri icermezler.
+  Yapi   : sablon_sozluk.tsv.gz butun sablonlarin (ad, kromozom, konum)
+           uclulerinin birlesimini tasir; her AMS_<urun>.tsv.gz govdesi bu
+           sozluge sira numarasi farkiyla isaret eder. sablon_dizini.tsv
+           her urunun firmasini, dogrulama durumunu (kit / kutuphane),
+           surum durumunu (guncel / eski / birlesim / bilinmiyor) ve menu
+           sirasini tasir. Her sablonun govde md5'i kendi ust satirlarinda
+           yazilidir ve okunurken denetlenir.
+  Koordinat: b37.
+
+sablon/sablon_ref.tsv.gz
+  Referans baz tablosu. sablon_sozluk.tsv.gz'deki tekil b37 konumlarda
+  GRCh37 referans bazi ve hg19ToHg38.over.chain.gz ile tasinmis hg38
+  konumunda GRCh38 referans bazi (arti iplik). MT satirlari tasinmaz:
+  sablonlarin MT konumlari da hg38'in chrM'i de rCRS'tir.
+  Kaynak : GRCh37 ve GRCh38 birincil montaj dizileri (Genome Reference
+           Consortium; kontig adlari 1-22, X, Y, MT). Bazlar dizilerden
+           konum konum okundu; degistirilmedi.
+  Dogrulama: hg38 bir VCF'in hedef konumlara dusen 618.583 SNP satirinin
+           REF alaniyla karsilastirildi; fark sifir.
+  Yapi   : kromozom kodu (k), ayni kromozomda bir onceki satira gore konum
+           farki (d), GRCh37 bazi (r37), hg38 konumunun b37 konumundan farki
+           (o38; bos: tasinmadi), hg38 kromozom kodu farkliysa (k38) ve
+           GRCh38 bazi (r38; "=" GRCh37 ile ayni). 1.841.943 satir.
+  Kullanim: 10. sekmede varyant-only bir VCF'ten cip dosyasi uretilirken
+           VCF'te satiri olmayan sablon konumlarina referans allel cifti
+           yazmak icin.
